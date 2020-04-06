@@ -55,6 +55,23 @@ app.get('/features', (req, res) =>{
     });
 });
 
+app.get('/orders', (req, res) =>{
+    client = new MongoClient(uri, { useNewUrlParser: true });
+    client.connect(err => {
+        const collection = client.db("fireOnion").collection("orders");
+        collection.find().toArray((err, documents) =>{
+            if(err){
+                console.log(err);
+                res.status(500).send({message:err});
+            }
+            else{
+             res.send(documents);
+            }
+        })
+        // client.close();
+    });
+});
+
 
 app.get('/item/:key', (req,res) => {
     const key = req.params.key;
